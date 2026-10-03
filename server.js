@@ -680,6 +680,79 @@ app.post("/api/mercadopago/preference", async (req, res) => {
   }
 });
 
+app.put("/api/account/password", async (req, res) => {
+  try {
+    if (!req.session.customer) {
+      return res.status(401).json({
+        error: "Você precisa estar logado."
+      });
+    }
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        error: "Preencha todos os campos."
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        error: "A confirmação da nova senha não confere."
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        error: "A nova senha deve ter pelo menos 6 caracteres."
+      });
+    }
+
+    const customer = db.prepare(`
+      SELECT id, password
+      FROM customers
+      WHERE id = ?
+    `).get(req.session.customer.id);
+
+    if (!customer) {
+      return res.status(404).json({
+        error: "Cliente não encontrado."
+      });
+    }
+
+    const passwordOk = await bcrypt.compare(
+      currentPassword,
+      customer.password
+    );
+
+    if (!passwordOk) {
+      return res.status(401).json({
+        error: "A senha atual está incorreta."
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    db.prepare(`
+      UPDATE customers
+      SET password = ?
+      WHERE id = ?
+    `).run(hashedPassword, customer.id);
+
+    res.json({
+      success: true,
+      message: "Senha alterada com sucesso!"
+    });
+
+  } catch (error) {
+    console.error("Erro ao alterar senha:", error);
+
+    res.status(500).json({
+      error: "Não foi possível alterar a senha."
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Eletro Prime rodando em http://localhost:${PORT}`);
 });

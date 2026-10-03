@@ -1546,37 +1546,51 @@ document.getElementById("successContinueBtn").onclick = function() {
     document.body.appendChild(modal);
 }
 
-
-function saveNewPassword() {
-
-    const currentPassword =
-        document.getElementById("currentPassword").value;
-
-    const newPassword =
-        document.getElementById("newPassword").value;
-
-    const confirmPassword =
-        document.getElementById("confirmPassword").value;
+async function saveNewPassword() {
+    const currentPassword = document.getElementById("currentPassword").value.trim();
+    const newPassword = document.getElementById("newPassword").value.trim();
+    const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
     if (!currentPassword || !newPassword || !confirmPassword) {
         alert("Preencha todos os campos.");
         return;
     }
 
-    if (newPassword.length < 6) {
-        alert("A nova senha deve ter pelo menos 6 caracteres.");
-        return;
-    }
-
     if (newPassword !== confirmPassword) {
-        alert("A confirmação da senha não confere.");
+        alert("A confirmação da nova senha não confere.");
         return;
     }
 
-    alert("Senha alterada com sucesso!");
+    try {
+        const response = await fetch("/api/account/password", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword
+            })
+        });
 
-    document.getElementById("changePasswordModal").remove();
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error || "Não foi possível alterar a senha.");
+            return;
+        }
+
+        alert("Senha alterada com sucesso!");
+
+        document.getElementById("changePasswordModal").remove();
+
+    } catch (error) {
+        console.error(error);
+        alert("Erro de conexão com o servidor.");
+    }
 }
+
  </script>
 
 </body>
