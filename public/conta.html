@@ -685,7 +685,7 @@
           de segurança da sua conta.
         </p>
 
-        <button style="
+        <button type="button" onclick="openChangePassword()" style="
           width:100%;
           margin-top:15px;
           padding:14px;
@@ -1350,6 +1350,232 @@ document.getElementById("successContinueBtn").onclick = function() {
     document.getElementById("addCardModal").remove();
 
     openPayments();
+}
+ 
+ 
+ function openChangePassword() {
+    if (document.getElementById("changePasswordModal")) return;
+
+    const modal = document.createElement("div");
+    modal.id = "changePasswordModal";
+
+    modal.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100000;
+        padding: 20px;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            width:100%;
+            max-width:440px;
+            background:#fff;
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 20px 60px rgba(0,0,0,.25);
+        ">
+
+            <div style="
+                text-align:center;
+                margin-bottom:24px;
+            ">
+                <div style="
+                    width:58px;
+                    height:58px;
+                    margin:0 auto 14px;
+                    border-radius:50%;
+                    background:#fff7e6;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:28px;
+                ">
+                    🔐
+                </div>
+
+                <div style="
+                    color:#f59e0b;
+                    font-size:12px;
+                    font-weight:800;
+                    letter-spacing:1px;
+                    margin-bottom:5px;
+                ">
+                    SEGURANÇA
+                </div>
+
+                <h2 style="
+                    margin:0;
+                    color:#172033;
+                    font-size:24px;
+                ">
+                    Alterar senha
+                </h2>
+
+                <p style="
+                    margin:8px 0 0;
+                    color:#777;
+                    font-size:14px;
+                ">
+                    Atualize a senha da sua conta.
+                </p>
+            </div>
+
+            <label style="
+                display:block;
+                margin-bottom:6px;
+                font-weight:700;
+                color:#172033;
+                font-size:14px;
+            ">
+                Senha atual
+            </label>
+
+            <input
+                id="currentPassword"
+                type="password"
+                placeholder="Digite sua senha atual"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:13px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    margin-bottom:16px;
+                    font-size:14px;
+                    outline:none;
+                "
+            >
+
+            <label style="
+                display:block;
+                margin-bottom:6px;
+                font-weight:700;
+                color:#172033;
+                font-size:14px;
+            ">
+                Nova senha
+            </label>
+
+            <input
+                id="newPassword"
+                type="password"
+                placeholder="Digite a nova senha"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:13px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    margin-bottom:16px;
+                    font-size:14px;
+                    outline:none;
+                "
+            >
+
+            <label style="
+                display:block;
+                margin-bottom:6px;
+                font-weight:700;
+                color:#172033;
+                font-size:14px;
+            ">
+                Confirmar nova senha
+            </label>
+
+            <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Digite novamente a nova senha"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:13px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    margin-bottom:22px;
+                    font-size:14px;
+                    outline:none;
+                "
+            >
+
+            <button
+                type="button"
+                onclick="saveNewPassword()"
+                style="
+                    width:100%;
+                    padding:14px;
+                    border:none;
+                    border-radius:10px;
+                    background:#f59e0b;
+                    color:#fff;
+                    font-size:16px;
+                    font-weight:700;
+                    cursor:pointer;
+                    margin-bottom:10px;
+                "
+            >
+                Salvar nova senha
+            </button>
+
+            <button
+                type="button"
+                onclick="document.getElementById('changePasswordModal').remove()"
+                style="
+                    width:100%;
+                    padding:13px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    background:#fff;
+                    color:#172033;
+                    font-size:15px;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                Cancelar
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+
+function saveNewPassword() {
+
+    const currentPassword =
+        document.getElementById("currentPassword").value;
+
+    const newPassword =
+        document.getElementById("newPassword").value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        alert("Preencha todos os campos.");
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        alert("A nova senha deve ter pelo menos 6 caracteres.");
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        alert("A confirmação da senha não confere.");
+        return;
+    }
+
+    alert("Senha alterada com sucesso!");
+
+    document.getElementById("changePasswordModal").remove();
 }
  </script>
 
