@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Eletro Prime - Minha Conta</title>
+
+  <link
+    rel="stylesheet"
+    href="/styles.css"
+  >
+
+</head>
+
+<body class="account-page">
+
+  <header class="account-header">
+
+    <a href="/" class="login-brand">
+      ⚡ ELETRO <b>PRIME</b>
+    </a>
+
+    <a href="/">
+      ← Voltar para a loja
+    </a>
+
+  </header>
+
+
+  <main class="account-container">
+
+    <section class="account-welcome">
+
+      <div>
+
+        <span class="account-label">
+          MINHA CONTA
+        </span>
+
+        <h1>
+          Olá, <span id="customerName">Cliente</span> 👋
+        </h1>
+
+        <p>
+          Gerencie seus dados, pedidos e preferências.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section id="customerDataPanel" class="customer-data-panel" style="display: none;">
+
+  <div class="customer-data-header">
+
+    <div>
+      <span>MEUS DADOS</span>
+
+      <h2>Informações pessoais</h2>
+
+      <p>
+        Confira os dados cadastrados na sua conta.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      onclick="closeCustomerData()"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="customer-data-grid">
+
+    <div class="customer-data-item">
+      <span>Nome completo</span>
+      <strong id="dataName">-</strong>
+    </div>
+
+    <div class="customer-data-item">
+      <span>CPF</span>
+      <strong id="dataCpf">-</strong>
+    </div>
+
+    <div class="customer-data-item">
+      <span>Telefone</span>
+      <strong id="dataPhone">-</strong>
+    </div>
+
+    <div class="customer-data-item">
+      <span>E-mail</span>
+      <strong id="dataEmail">-</strong>
+    </div>
+
+  </div>
+
+</section>
+    <section
+  id="favoritesPanel"
+  class="favorites-panel"
+  style="display: none;"
+></section>
+<section class="account-layout">
+
+  <!-- MENU LATERAL -->
+  <aside class="account-sidebar">
+
+    <div class="account-sidebar-title">
+      MINHA CONTA
+    </div>
+
+    <button
+      type="button"
+      onclick="openCustomerData()">
+      <span>👤</span>
+      <div>
+        <strong>Meus dados</strong>
+      </div>
+    </button>
+
+    <button type="button">
+      <span>📦</span>
+      <div>
+        <strong>Meus pedidos</strong>
+      </div>
+    </button>
+
+    <button
+      type="button"
+      class="active"
+      onclick="openFavorites()">
+      <span>♡</span>
+      <div>
+        <strong>Favoritos</strong>
+      </div>
+    </button>
+
+    <button type="button">
+      <span>📍</span>
+      <div>
+        <strong>Meus endereços</strong>
+      </div>
+    </button>
+
+    <button type="button">
+      <span>🔒</span>
+      <div>
+        <strong>Segurança</strong>
+      </div>
+    </button>
+
+    <button type="button">
+      <span>🚪</span>
+      <div>
+        <strong>Sair da conta</strong>
+      </div>
+    </button>
+
+  </aside>
+
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="account-content">
+
+    <div class="account-content-header">
+
+      <div class="account-content-title">
+
+        <div>
+          <h2>♡ Favoritos</h2>
+
+          <p>
+            Produtos que você salvou para comprar depois.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="account-tabs">
+
+      <button class="account-tab active">
+        Meus favoritos
+      </button>
+
+      <button class="account-tab">
+        Listas
+      </button>
+
+    </div>
+
+
+    <div class="favorites-panel">
+
+      <div class="favorites-empty">
+
+        <div class="favorites-empty-icon">
+          ♡
+        </div>
+
+        <h3>
+          Você ainda não tem produtos favoritos
+        </h3>
+
+        <p>
+          Adicione produtos aos seus favoritos clicando
+          no coração ❤️ nos produtos da ELETRO PRIME.
+        </p>
+
+        <button
+          type="button"
+          onclick="location.href='/'">
+          Explorar produtos
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+  </main>
+
+
+  <script>
+
+    const customerData =
+      JSON.parse(
+        localStorage.getItem("ep_customer") || "null"
+      );
+
+    if (!customerData) {
+
+      window.location.href = "/login.html";
+
+    } else {
+
+      document.querySelector("#customerName").textContent =
+        customerData.name;
+
+    }
+
+
+    function logout() {
+
+      localStorage.removeItem("ep_customer");
+
+      window.location.href = "/";
+
+    }
+
+    async function openFavorites() {
+
+  const response = await fetch("/api/favorites", {
+    credentials: "include"
+  });
+
+  const data = await response.json();
+
+  if (response.status === 401) {
+    alert("🔐 Entre na sua conta para acessar seus favoritos.");
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const favorites = data.favorites || [];
+
+  if (!favorites.length) {
+    alert("❤️ Você ainda não salvou nenhum produto nos favoritos.");
+    return;
+  }
+
+  let html = "";
+
+  favorites.forEach(product => {
+
+    const price = product.sale_price ?? product.price;
+
+    html += `
+      <article class="favorite-product">
+
+        <img
+          src="${product.image || 'https://placehold.co/300x220/111827/e0b85c?text=Eletro+Prime'}"
+          alt="${product.name}"
+        >
+
+        <div class="favorite-product-info">
+
+          <h3>${product.name}</h3>
+
+          <span class="favorite-price">
+            R$ ${Number(price).toFixed(2).replace(".", ",")}
+          </span>
+
+          <button
+            type="button"
+            onclick="window.location.href='/produto.html?id=${product.id}'"
+          >
+            Ver produto
+          </button>
+
+        </div>
+
+      </article>
+    `;
+
+  });
+
+  const panel = document.querySelector("#favoritesPanel");
+
+  if (panel) {
+    panel.innerHTML = `
+      <div class="favorites-header">
+        <div>
+          <span>SEUS PRODUTOS</span>
+          <h2>❤️ Favoritos</h2>
+          <p>Produtos que você salvou para comprar depois.</p>
+        </div>
+
+        <button
+          type="button"
+          class="favorites-close"
+          onclick="closeFavorites()"
+        >
+          Fechar
+        </button>
+      </div>
+
+      <div class="favorites-list">
+        ${html}
+      </div>
+    `;
+
+    panel.style.display = "block";
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+}
+  </script>
+
+</body>
+
+</html>
+

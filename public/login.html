@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Eletro Prime - Minha Conta</title>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="login-page">
+
+  <main class="login-container">
+
+    <div class="login-box">
+
+      <a href="/" class="login-brand">
+        ⚡ ELETRO <b>PRIME</b>
+      </a>
+
+      <h1>Minha conta</h1>
+
+      <p class="login-subtitle">
+        Entre na sua conta para continuar sua compra.
+      </p>
+
+      <form id="loginForm">
+
+        <label for="email">
+          E-mail
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Digite seu e-mail"
+          required
+        >
+
+        <label for="password">
+          Senha
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Digite sua senha"
+          required
+        >
+
+        <button type="submit" class="login-button">
+          Entrar na minha conta
+        </button>
+
+      </form>
+
+      <div class="login-divider">
+        <span>ou</span>
+      </div>
+
+      <button
+        type="button"
+        class="register-button"
+        onclick="location.href='cadastro.html'"
+      >
+        Criar minha conta
+      </button>
+
+      <a href="/" class="back-store">
+        ← Voltar para a loja
+      </a>
+
+    </div>
+
+  </main>
+
+  <script>
+
+const loginForm = document.querySelector("#loginForm");
+
+loginForm.addEventListener("submit", async (event) => {
+
+  event.preventDefault();
+
+  const email = document.querySelector("#email").value.trim();
+  const password = document.querySelector("#password").value;
+
+  if (!email || !password) {
+    alert("Digite seu e-mail e sua senha.");
+    return;
+  }
+
+  try {
+
+    const response = await fetch("/api/login", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        email,
+        password
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.error || "E-mail ou senha incorretos.");
+      return;
+    }
+
+    localStorage.setItem(
+      "ep_customer",
+      JSON.stringify(data.customer)
+    );
+
+    alert(`Olá, ${data.customer.name}! 👋`);
+
+    window.location.href = "/";
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Não foi possível conectar ao servidor.");
+
+  }
+
+});
+
+</script>
+</body>
+</html>
+

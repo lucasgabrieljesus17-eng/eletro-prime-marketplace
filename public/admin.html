@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel — Eletro Prime</title><link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+<div id="login" class="login"><div class="login-card"><div class="logo">⚡ ELETRO <b>PRIME</b></div><h1>Painel do proprietário</h1><p>Entre para administrar sua loja.</p><input id="email" placeholder="E-mail"><input id="password" type="password" placeholder="Senha"><button onclick="login()">Entrar</button><small id="loginMsg"></small></div></div>
+
+<div id="app" class="hidden">
+<header><div class="logo">⚡ ELETRO <b>PRIME</b></div><div><span id="adminEmail"></span><button onclick="logout()">Sair</button></div></header>
+<div class="layout">
+<aside>
+<button onclick="show('dashboard')">📊 Dashboard</button>
+<button onclick="show('products')">📦 Produtos</button>
+<button onclick="show('banners')">🖼️ Banners</button>
+<button onclick="show('orders')">🛒 Pedidos</button>
+<a href="/" target="_blank">↗ Ver loja</a>
+</aside>
+<main>
+<section id="dashboard" class="page"><h1>Dashboard</h1><div id="stats" class="stats"></div><div class="panel"><h2>Como administrar</h2><p>Cadastre produtos, controle estoque, publique banners e acompanhe pedidos sem alterar o código.</p></div></section>
+<section id="products" class="page hidden"><div class="page-title"><h1>Produtos</h1><button class="primary" onclick="newProduct()">+ Novo produto</button></div><div id="productList" class="panel"></div></section>
+<section id="banners" class="page hidden"><div class="page-title"><h1>Banners da home</h1><button class="primary" onclick="newBanner()">+ Novo banner</button></div><div id="bannerList" class="panel"></div></section>
+<section id="orders" class="page hidden"><div class="page-title"><h1>Pedidos</h1></div><div id="orderList" class="panel"></div></section>
+</main>
+</div>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h2 id="modalTitle"></h2><button onclick="closeModal()">×</button></div><div id="modalBody"></div></div></div>
+<script src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eletro Prime — Tecnologia para o seu lar</title>
+<meta name="description" content="Eletro Prime — eletrônicos, tecnologia e utilidades para o seu lar.">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="topbar">
+    <a class="brand" href="/">⚡ <span>ELETRO <b>PRIME</b></span></a>
+    <div class="search"><span>⌕</span><input id="search" placeholder="Buscar produtos, marcas e categorias..."><button id="searchBtn">Buscar</button></div>
+    <div class="head-actions">
+     <a href="/conta.html" class="account-link">
+  Minha conta
+</a>
+  
+</button>
+      <button>♡</button>
+      <button id="cartBtn">🛒 <span id="cartCount">0</span></button>
+    </div>
+  </div>
+  <nav>
+    <a href="#ofertas">Ofertas</a><a href="#categorias">Categorias</a><a href="#produtos">Tecnologia</a><a href="#produtos">Informática</a><a href="#produtos">Áudio e Vídeo</a><a href="#produtos">Acessórios</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">ELETRO PRIME</span>
+    <h1>TECNOLOGIA<br><em>PARA O SEU LAR.</em></h1>
+    <p>Eletrônicos, utilidades e novidades selecionadas para você.</p>
+    <a class="gold-btn" href="#ofertas">Explorar ofertas →</a>
+  </div>
+  <div class="hero-media" id="heroMedia"></div>
+  <div class="hero-dots" id="heroDots"></div>
+</section>
+
+<section id="categorias" class="section">
+  <div class="section-title"><div><span>EXPLORE</span><h2>Compre por categoria</h2></div></div>
+  <div id="categories" class="categories"></div>
+</section>
+
+<section id="ofertas" class="section">
+  <div class="section-title"><div><span>DESTAQUES</span><h2>Ofertas em destaque</h2></div><a href="#produtos">Ver todos →</a></div>
+  <div id="featured" class="product-grid"></div>
+</section>
+
+<section id="produtos" class="section">
+  <div class="section-title"><div><span>CATÁLOGO</span><h2>Produtos</h2></div>
+    <select id="sort"><option value="relevant">Mais relevantes</option><option value="new">Novidades</option><option value="price_asc">Menor preço</option><option value="price_desc">Maior preço</option></select>
+  </div>
+  <div id="catalog" class="product-grid"></div>
+</section>
+</main>
+
+<div class="cart-drawer" id="drawer">
+  <div class="drawer-head"><h3>Seu carrinho</h3><button onclick="closeCart()">×</button></div>
+  <div id="cartItems"></div>
+  <div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+  <button class="gold-btn full" onclick="checkout()">Finalizar compra</button>
+</div>
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<footer>
+  <div><div class="brand">⚡ ELETRO <b>PRIME</b></div><p>TECNOLOGIA PARA O SEU LAR</p></div>
+  <div><strong>Atendimento</strong><p>Segunda a sexta · 9h às 18h</p><p>WhatsApp configurável no painel</p></div>
+  <div><strong>Pagamento</strong><p>Pix · Crédito · Débito</p><p>CNPJ: 52.280.342/0001-06</p></div>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
