@@ -1,362 +1,1357 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Eletro Prime - Minha Conta</title>
 
-  <link
-    rel="stylesheet"
-    href="/styles.css"
-  >
+  <link rel="stylesheet" href="/styles.css">
 
+  <style>
+    .account-page {
+      background: #f5f5f5;
+      min-height: 100vh;
+      color: #222;
+    }
+
+    .account-header {
+      background: #0b1020;
+      color: #fff;
+      padding: 22px 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .account-logo {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .account-logo span {
+      color: #f5b82e;
+    }
+
+    .back-store {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .account-container {
+      width: min(1100px, 92%);
+      margin: 35px auto 70px;
+    }
+
+    .account-title {
+      margin-bottom: 25px;
+    }
+
+    .account-title small {
+      color: #e7ad2f;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .account-title h1 {
+      margin: 8px 0;
+      font-size: 32px;
+    }
+
+    .account-title p {
+      color: #666;
+      margin: 0;
+    }
+
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .account-card {
+      background: #fff;
+      border: 1px solid #e3e3e3;
+      border-radius: 10px;
+      padding: 25px;
+      min-height: 125px;
+      text-decoration: none;
+      color: #222;
+      transition: 0.2s ease;
+      display: block;
+    }
+
+    .account-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 18px rgba(0,0,0,.10);
+      border-color: #e7ad2f;
+    }
+
+    .account-icon {
+      font-size: 27px;
+      margin-bottom: 18px;
+    }
+
+    .account-card h2 {
+      font-size: 18px;
+      margin: 0 0 7px;
+    }
+
+    .account-card p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 800px) {
+      .account-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 550px) {
+      .account-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .account-header {
+        padding: 18px 5%;
+      }
+
+      .account-title h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
 </head>
 
 <body class="account-page">
 
   <header class="account-header">
+    <div class="account-logo">
+      ⚡ ELETRO <span>PRIME</span>
+    </div>
 
-    <a href="/" class="login-brand">
-      ⚡ ELETRO <b>PRIME</b>
-    </a>
-
-    <a href="/">
+    <a href="/" class="back-store">
       ← Voltar para a loja
     </a>
-
   </header>
-
 
   <main class="account-container">
 
-    <section class="account-welcome">
+    <div class="account-title">
+      <small>Minha conta</small>
+      <h1>Minha conta</h1>
+      <p>Gerencie seus dados, pedidos e preferências.</p>
+    </div>
 
-      <div>
+    <section class="account-grid">
 
-        <span class="account-label">
-          MINHA CONTA
-        </span>
+      <a href="#" class="account-card" onclick="openCustomerData(); return false;">
+        <div class="account-icon">
+<img src="https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128/Person-3d-Default-icon.png" alt="Perfil">
+</div>
+        <h2>Informações do seu perfil</h2>
+        <p>Dados pessoais e informações da sua conta.</p>
+      </a>
 
-        <h1>
-          Olá, <span id="customerName">Cliente</span> 👋
-        </h1>
+      <a href="#" class="account-card" onclick="openOrders(); return false;">
+       <div class="account-icon">
+  <img src="https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128/Package-3d-icon.png" alt="Pedidos">
+</div>
+        <p>Acompanhe suas compras e veja seu histórico de pedidos.</p>
+      </a>
 
-        <p>
-          Gerencie seus dados, pedidos e preferências.
-        </p>
+      <a href="#" class="account-card" onclick="openAddresses(); return false;">
+        <div class="account-icon">
+  <img src="https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128/Round-Pushpin-3d-icon.png" alt="Endereços">
+</div>
+        <p>Gerencie seus endereços de entrega.</p>
+      </a>
 
-      </div>
+      <a href="javascript:void(0)" class="account-card" onclick="openFavorites(); return false;">
+        <div class="account-icon">
+  <img src="https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128/Yellow-Heart-3d-icon.png" alt="Favoritos">
+</div>
+        <p>Produtos que você salvou para comprar depois.</p>
+      </a>
+
+      <a href="#" class="account-card" onclick="openSecurity(); return false;">
+       <div class="account-icon">
+  <img src="https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128/Locked-3d-icon.png" alt="Segurança">
+</div>
+        <p>Gerencie sua senha e a segurança da sua conta.</p>
+      </a>
+
+     <a href="javascript:void(0)" class="account-card" onclick="openPayments(); return false;">
+        <div class="account-icon">
+  <img src="https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128/Credit-Card-3d-icon.png" alt="Pagamentos">
+</div>
+        <p>Gerencie suas formas de pagamento.</p>
+      </a>
 
     </section>
 
+  </main>
 
-    <section id="customerDataPanel" class="customer-data-panel" style="display: none;">
+  <script>
 
-  <div class="customer-data-header">
+    function getCustomer() {
+      return JSON.parse(localStorage.getItem("ep_customer") || "null");
+    }
 
-    <div>
-      <span>MEUS DADOS</span>
+    function openCustomerData() {
+  const customer = JSON.parse(localStorage.getItem("ep_customer") || "null");
 
-      <h2>Informações pessoais</h2>
+  if (!customer) {
+    alert("Não foi possível encontrar os dados da sua conta.");
+    return;
+  }
 
-      <p>
-        Confira os dados cadastrados na sua conta.
-      </p>
-    </div>
+  const overlay = document.createElement("div");
 
-    <button
-      type="button"
-      onclick="closeCustomerData()"
-    >
-      ×
-    </button>
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+  `;
 
-  </div>
+  overlay.innerHTML = `
+    <div style="
+      width: min(600px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      padding: 30px;
+      font-family: Arial, sans-serif;
+    ">
 
-
-  <div class="customer-data-grid">
-
-    <div class="customer-data-item">
-      <span>Nome completo</span>
-      <strong id="dataName">-</strong>
-    </div>
-
-    <div class="customer-data-item">
-      <span>CPF</span>
-      <strong id="dataCpf">-</strong>
-    </div>
-
-    <div class="customer-data-item">
-      <span>Telefone</span>
-      <strong id="dataPhone">-</strong>
-    </div>
-
-    <div class="customer-data-item">
-      <span>E-mail</span>
-      <strong id="dataEmail">-</strong>
-    </div>
-
-  </div>
-
-</section>
-    <section
-  id="favoritesPanel"
-  class="favorites-panel"
-  style="display: none;"
-></section>
-<section class="account-layout">
-
-  <!-- MENU LATERAL -->
-  <aside class="account-sidebar">
-
-    <div class="account-sidebar-title">
-      MINHA CONTA
-    </div>
-
-    <button
-      type="button"
-      onclick="openCustomerData()">
-      <span>👤</span>
-      <div>
-        <strong>Meus dados</strong>
-      </div>
-    </button>
-
-    <button type="button">
-      <span>📦</span>
-      <div>
-        <strong>Meus pedidos</strong>
-      </div>
-    </button>
-
-    <button
-      type="button"
-      class="active"
-      onclick="openFavorites()">
-      <span>♡</span>
-      <div>
-        <strong>Favoritos</strong>
-      </div>
-    </button>
-
-    <button type="button">
-      <span>📍</span>
-      <div>
-        <strong>Meus endereços</strong>
-      </div>
-    </button>
-
-    <button type="button">
-      <span>🔒</span>
-      <div>
-        <strong>Segurança</strong>
-      </div>
-    </button>
-
-    <button type="button">
-      <span>🚪</span>
-      <div>
-        <strong>Sair da conta</strong>
-      </div>
-    </button>
-
-  </aside>
-
-
-  <!-- CONTEÚDO PRINCIPAL -->
-  <div class="account-content">
-
-    <div class="account-content-header">
-
-      <div class="account-content-title">
-
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+      ">
         <div>
-          <h2>♡ Favoritos</h2>
+          <div style="
+            color:#d99b16;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:6px;
+          ">
+            Minha conta
+          </div>
 
-          <p>
+          <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:26px;
+          ">
+            Informações do seu perfil
+          </h2>
+        </div>
+
+        <button id="closeCustomerModal" style="
+          width:38px;
+          height:38px;
+          border:none;
+          border-radius:50%;
+          background:#f5f1e8;
+          color:#172033;
+          font-size:22px;
+          cursor:pointer;
+        ">×</button>
+      </div>
+
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:20px;
+        margin-bottom:16px;
+      ">
+        <h3 style="
+          margin:0 0 15px;
+          color:#172033;
+          font-size:17px;
+        ">
+          Dados pessoais
+        </h3>
+
+        <p><strong>Nome:</strong> ${customer.name || "-"}</p>
+        <p><strong>CPF:</strong> ${customer.cpf || "-"}</p>
+        <p><strong>Telefone:</strong> ${customer.phone || "-"}</p>
+        <p><strong>E-mail:</strong> ${customer.email || "-"}</p>
+      </div>
+
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:20px;
+      ">
+        <h3 style="
+          margin:0 0 15px;
+          color:#172033;
+          font-size:17px;
+        ">
+          Endereço de entrega
+        </h3>
+
+        <p><strong>CEP:</strong> ${customer.cep || "-"}</p>
+        <p><strong>Rua:</strong> ${customer.street || "-"}, ${customer.number || "-"}</p>
+        <p><strong>Complemento:</strong> ${customer.complement || "-"}</p>
+        <p><strong>Bairro:</strong> ${customer.neighborhood || "-"}</p>
+        <p><strong>Cidade:</strong> ${customer.city || "-"}</p>
+        <p><strong>Estado:</strong> ${customer.state || "-"}</p>
+      </div>
+
+      <button id="closeCustomerModalBottom" style="
+        width:100%;
+        margin-top:22px;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#d99b16;
+        color:#fff;
+        font-size:15px;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        Fechar
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  function closeModal() {
+    overlay.remove();
+  }
+
+  document.getElementById("closeCustomerModal").onclick = closeModal;
+  document.getElementById("closeCustomerModalBottom").onclick = closeModal;
+
+  overlay.addEventListener("click", function(event) {
+    if (event.target === overlay) {
+      closeModal();
+    }
+  });
+}
+
+      
+    
+
+   function openOrders() {
+  const overlay = document.createElement("div");
+
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: min(600px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      padding: 30px;
+      font-family: Arial, sans-serif;
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+      ">
+        <div>
+          <div style="
+            color:#d99b16;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:6px;
+          ">
+            Minha conta
+          </div>
+
+          <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:26px;
+          ">
+            Meus pedidos
+          </h2>
+        </div>
+
+        <button id="closeOrders" style="
+          width:38px;
+          height:38px;
+          border:none;
+          border-radius:50%;
+          background:#f5f1e8;
+          color:#172033;
+          font-size:22px;
+          cursor:pointer;
+        ">×</button>
+      </div>
+
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:30px;
+        text-align:center;
+      ">
+        <div style="font-size:48px;margin-bottom:15px;">📦</div>
+
+        <h3 style="
+          margin:0 0 10px;
+          color:#172033;
+        ">
+          Seus pedidos
+        </h3>
+
+        <p style="
+          color:#666;
+          line-height:1.6;
+          margin:0;
+        ">
+          Aqui aparecerão suas compras e o acompanhamento
+          dos seus pedidos.
+        </p>
+      </div>
+
+      <button id="closeOrdersBottom" style="
+        width:100%;
+        margin-top:20px;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#d99b16;
+        color:#fff;
+        font-size:15px;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        Fechar
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  function closeOrdersModal() {
+    overlay.remove();
+  }
+
+  document.getElementById("closeOrders").onclick = closeOrdersModal;
+  document.getElementById("closeOrdersBottom").onclick = closeOrdersModal;
+
+  overlay.addEventListener("click", function(event) {
+    if (event.target === overlay) {
+      closeOrdersModal();
+    }
+  });
+}
+
+    function openAddresses() {
+  const customer = JSON.parse(localStorage.getItem("ep_customer") || "null");
+
+  const overlay = document.createElement("div");
+
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: min(600px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      padding: 30px;
+      font-family: Arial, sans-serif;
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+      ">
+        <div>
+          <div style="
+            color:#d99b16;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:6px;
+          ">
+            Minha conta
+          </div>
+
+          <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:26px;
+          ">
+            Meus endereços
+          </h2>
+        </div>
+
+        <button id="closeAddresses" style="
+          width:38px;
+          height:38px;
+          border:none;
+          border-radius:50%;
+          background:#f5f1e8;
+          color:#172033;
+          font-size:22px;
+          cursor:pointer;
+        ">×</button>
+      </div>
+
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:22px;
+      ">
+
+        <h3 style="
+          margin:0 0 18px;
+          color:#172033;
+        ">
+          Endereço de entrega
+        </h3>
+
+        ${
+          customer
+            ? `
+              <p><strong>CEP:</strong> ${customer.cep || "-"}</p>
+              <p><strong>Rua:</strong> ${customer.street || "-"}, ${customer.number || "-"}</p>
+              <p><strong>Complemento:</strong> ${customer.complement || "-"}</p>
+              <p><strong>Bairro:</strong> ${customer.neighborhood || "-"}</p>
+              <p><strong>Cidade:</strong> ${customer.city || "-"}</p>
+              <p><strong>Estado:</strong> ${customer.state || "-"}</p>
+            `
+            : `
+              <p style="color:#666;">
+                Nenhum endereço cadastrado.
+              </p>
+            `
+        }
+
+      </div>
+
+      <button id="closeAddressesBottom" style="
+        width:100%;
+        margin-top:20px;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#d99b16;
+        color:#fff;
+        font-size:15px;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        Fechar
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  function closeAddressesModal() {
+    overlay.remove();
+  }
+
+  document.getElementById("closeAddresses").onclick = closeAddressesModal;
+  document.getElementById("closeAddressesBottom").onclick = closeAddressesModal;
+
+  overlay.addEventListener("click", function(event) {
+    if (event.target === overlay) {
+      closeAddressesModal();
+    }
+  });
+}
+
+    function openSecurity() {
+  const overlay = document.createElement("div");
+
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: min(500px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      padding: 30px;
+      font-family: Arial, sans-serif;
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+      ">
+        <div>
+          <div style="
+            color:#d99b16;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:6px;
+          ">
+            Minha conta
+          </div>
+
+          <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:26px;
+          ">
+            Segurança
+          </h2>
+        </div>
+
+        <button id="closeSecurity" style="
+          width:38px;
+          height:38px;
+          border:none;
+          border-radius:50%;
+          background:#f5f1e8;
+          color:#172033;
+          font-size:22px;
+          cursor:pointer;
+        ">×</button>
+      </div>
+
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:20px;
+      ">
+        <h3 style="margin:0 0 10px;color:#172033;">
+          Segurança da sua conta
+        </h3>
+
+        <p style="color:#666;line-height:1.6;">
+          Aqui você poderá gerenciar sua senha e outras opções
+          de segurança da sua conta.
+        </p>
+
+        <button style="
+          width:100%;
+          margin-top:15px;
+          padding:14px;
+          border:none;
+          border-radius:10px;
+          background:#d99b16;
+          color:#fff;
+          font-weight:700;
+          cursor:pointer;
+        ">
+          Alterar senha
+        </button>
+      </div>
+
+      <button id="closeSecurityBottom" style="
+        width:100%;
+        margin-top:20px;
+        padding:14px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        background:#fff;
+        color:#172033;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        Fechar
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  function closeSecurityModal() {
+    overlay.remove();
+  }
+
+  document.getElementById("closeSecurity").onclick = closeSecurityModal;
+  document.getElementById("closeSecurityBottom").onclick = closeSecurityModal;
+
+  overlay.addEventListener("click", function(event) {
+    if (event.target === overlay) {
+      closeSecurityModal();
+    }
+  });
+}
+
+    
+
+ 
+ function openFavorites() {
+  const overlay = document.createElement("div");
+
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: min(800px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      padding: 30px;
+      font-family: Arial, sans-serif;
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+      ">
+        <div>
+          <div style="
+            color:#d99b16;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:6px;
+          ">
+            Minha conta
+          </div>
+
+          <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:28px;
+          ">
+            Meus favoritos
+          </h2>
+
+          <p style="
+            color:#777;
+            margin:8px 0 0;
+          ">
             Produtos que você salvou para comprar depois.
           </p>
         </div>
 
+        <button id="closeFavorites" style="
+          width:38px;
+          height:38px;
+          border:none;
+          border-radius:50%;
+          background:#f5f1e8;
+          color:#172033;
+          font-size:22px;
+          cursor:pointer;
+        ">×</button>
       </div>
 
-    </div>
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:45px 20px;
+        text-align:center;
+      ">
 
+        
 
-    <div class="account-tabs">
-
-      <button class="account-tab active">
-        Meus favoritos
-      </button>
-
-      <button class="account-tab">
-        Listas
-      </button>
-
-    </div>
-
-
-    <div class="favorites-panel">
-
-      <div class="favorites-empty">
-
-        <div class="favorites-empty-icon">
-          ♡
-        </div>
-
-        <h3>
-          Você ainda não tem produtos favoritos
+        <h3 style="
+          margin:0 0 10px;
+          color:#172033;
+          font-size:20px;
+        ">
+          Você ainda não tem favoritos
         </h3>
 
-        <p>
-          Adicione produtos aos seus favoritos clicando
-          no coração ❤️ nos produtos da ELETRO PRIME.
+        <p style="
+          margin:0;
+          color:#777;
+          line-height:1.6;
+        ">
+          Quando você salvar um produto com o coração,
+          ele aparecerá aqui.
         </p>
 
-        <button
-          type="button"
-          onclick="location.href='/'">
-          Explorar produtos
-        </button>
-
       </div>
+
+      <button id="closeFavoritesBottom" style="
+        width:100%;
+        margin-top:20px;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#d99b16;
+        color:#fff;
+        font-size:15px;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        Voltar
+      </button>
 
     </div>
+  `;
 
-  </div>
+  document.body.appendChild(overlay);
 
-</section>
-  </main>
+  function closeFavoritesModal() {
+    overlay.remove();
+  }
 
+  document.getElementById("closeFavorites").onclick =
+    closeFavoritesModal;
 
-  <script>
+  document.getElementById("closeFavoritesBottom").onclick =
+    closeFavoritesModal;
 
-    const customerData =
-      JSON.parse(
-        localStorage.getItem("ep_customer") || "null"
-      );
-
-    if (!customerData) {
-
-      window.location.href = "/login.html";
-
-    } else {
-
-      document.querySelector("#customerName").textContent =
-        customerData.name;
-
+  overlay.addEventListener("click", function(event) {
+    if (event.target === overlay) {
+      closeFavoritesModal();
     }
-
-
-    function logout() {
-
-      localStorage.removeItem("ep_customer");
-
-      window.location.href = "/";
-
-    }
-
-    async function openFavorites() {
-
-  const response = await fetch("/api/favorites", {
-    credentials: "include"
   });
-
-  const data = await response.json();
-
-  if (response.status === 401) {
-    alert("🔐 Entre na sua conta para acessar seus favoritos.");
-    window.location.href = "/login.html";
-    return;
-  }
-
-  const favorites = data.favorites || [];
-
-  if (!favorites.length) {
-    alert("❤️ Você ainda não salvou nenhum produto nos favoritos.");
-    return;
-  }
-
-  let html = "";
-
-  favorites.forEach(product => {
-
-    const price = product.sale_price ?? product.price;
-
-    html += `
-      <article class="favorite-product">
-
-        <img
-          src="${product.image || 'https://placehold.co/300x220/111827/e0b85c?text=Eletro+Prime'}"
-          alt="${product.name}"
-        >
-
-        <div class="favorite-product-info">
-
-          <h3>${product.name}</h3>
-
-          <span class="favorite-price">
-            R$ ${Number(price).toFixed(2).replace(".", ",")}
-          </span>
-
-          <button
-            type="button"
-            onclick="window.location.href='/produto.html?id=${product.id}'"
-          >
-            Ver produto
-          </button>
-
-        </div>
-
-      </article>
-    `;
-
-  });
-
-  const panel = document.querySelector("#favoritesPanel");
-
-  if (panel) {
-    panel.innerHTML = `
-      <div class="favorites-header">
-        <div>
-          <span>SEUS PRODUTOS</span>
-          <h2>❤️ Favoritos</h2>
-          <p>Produtos que você salvou para comprar depois.</p>
-        </div>
-
-        <button
-          type="button"
-          class="favorites-close"
-          onclick="closeFavorites()"
-        >
-          Fechar
-        </button>
-      </div>
-
-      <div class="favorites-list">
-        ${html}
-      </div>
-    `;
-
-    panel.style.display = "block";
-
-    panel.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-
 }
-  </script>
+ 
+ 
+ function openPayments() {
+  const overlay = document.createElement("div");
+
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: min(650px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      padding: 30px;
+      font-family: Arial, sans-serif;
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+      ">
+        <div>
+          <div style="
+            color:#d99b16;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:6px;
+          ">
+            Minha conta
+          </div>
+
+          <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:26px;
+          ">
+            Meus pagamentos
+          </h2>
+
+          <p style="
+            color:#777;
+            margin:8px 0 0;
+          ">
+            Gerencie suas formas de pagamento.
+          </p>
+        </div>
+
+        <button id="closePayments" style="
+          width:38px;
+          height:38px;
+          border:none;
+          border-radius:50%;
+          background:#f5f1e8;
+          color:#172033;
+          font-size:22px;
+          cursor:pointer;
+        ">×</button>
+      </div>
+
+      <div style="
+        background:#f8f6f1;
+        border-radius:14px;
+        padding:22px;
+      ">
+
+        <h3 style="
+          margin:0 0 18px;
+          color:#172033;
+        ">
+          Cartões salvos
+        </h3>
+
+        <div style="
+          background:#fff;
+          border:1px solid #e5e5e5;
+          border-radius:12px;
+          padding:20px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+        ">
+
+          <div style="
+            display:flex;
+            align-items:center;
+            gap:15px;
+          ">
+
+            <div style="
+              width:55px;
+              height:36px;
+              border-radius:7px;
+              background:#172033;
+              position:relative;
+            ">
+              <div style="
+                position:absolute;
+                bottom:6px;
+                left:8px;
+                width:16px;
+                height:4px;
+                background:#d99b16;
+                border-radius:2px;
+              "></div>
+            </div>
+
+            <div>
+              <strong style="color:#172033;">
+                Cartão de crédito
+              </strong>
+
+              <div style="
+                color:#777;
+                font-size:14px;
+                margin-top:5px;
+              ">
+               ${(() => {
+    const card = JSON.parse(localStorage.getItem("ep_saved_card") || "null");
+    return card
+        ? "•••• •••• •••• " + card.ultimos4
+        : "Nenhum cartão salvo";
+})()}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <button type="button" onclick="openAddCard();" style="
+          width:100%;
+          margin-top:18px;
+          padding:14px;
+          border:2px solid #d99b16;
+          border-radius:10px;
+          background:#fff;
+          color:#b27d00;
+          font-size:15px;
+          font-weight:700;
+          cursor:pointer;
+        ">
+          + Adicionar cartão
+        </button>
+
+      </div>
+
+      <div style="
+        margin-top:18px;
+        padding:18px;
+        background:#fff8e8;
+        border-radius:12px;
+        color:#666;
+        font-size:13px;
+        line-height:1.5;
+      ">
+        🔒 Seus dados de pagamento devem ser tratados com segurança.
+      </div>
+
+      <button id="closePaymentsBottom" style="
+        width:100%;
+        margin-top:20px;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#d99b16;
+        color:#fff;
+        font-size:15px;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        Fechar
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  function closePaymentsModal() {
+    overlay.remove();
+  }
+
+  document.getElementById("closePayments").onclick = closePaymentsModal;
+  document.getElementById("closePaymentsBottom").onclick = closePaymentsModal;
+
+  overlay.addEventListener("click", function(event) {
+    if (event.target === overlay) {
+      closePaymentsModal();
+    }
+  });
+}
+ 
+ 
+ function openAddCard() {
+    const oldModal = document.getElementById("addCardModal");
+    if (oldModal) oldModal.remove();
+
+    const modal = document.createElement("div");
+    modal.id = "addCardModal";
+
+    modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.55);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index:99999;
+        padding:20px;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            width:100%;
+            max-width:500px;
+            background:#fff;
+            border-radius:18px;
+            padding:28px;
+            box-shadow:0 20px 60px rgba(0,0,0,.25);
+        ">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+                <div>
+                    <div style="
+                        color:#f59e0b;
+                        font-size:12px;
+                        font-weight:800;
+                        letter-spacing:1px;
+                    ">
+                        PAGAMENTOS
+                    </div>
+
+                    <h2 style="
+                        margin:5px 0 0;
+                        color:#172033;
+                        font-size:24px;
+                    ">
+                        Adicionar cartão
+                    </h2>
+                </div>
+
+                <button onclick="document.getElementById('addCardModal').remove()" style="
+                    width:38px;
+                    height:38px;
+                    border:none;
+                    border-radius:50%;
+                    background:#f5f1e8;
+                    color:#172033;
+                    font-size:20px;
+                    cursor:pointer;
+                ">×</button>
+            </div>
+
+            <label style="display:block;margin-bottom:6px;font-weight:700;color:#333;">
+                Nome no cartão
+            </label>
+
+            <input type="text" placeholder="Nome completo" style="
+                width:100%;
+                padding:13px;
+                border:1px solid #ddd;
+                border-radius:10px;
+                box-sizing:border-box;
+                margin-bottom:15px;
+            ">
+
+            <label style="display:block;margin-bottom:6px;font-weight:700;color:#333;">
+                Número do cartão
+            </label>
+
+            <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" style="
+                width:100%;
+                padding:13px;
+                border:1px solid #ddd;
+                border-radius:10px;
+                box-sizing:border-box;
+                margin-bottom:15px;
+            ">
+
+            <div style="display:flex;gap:12px;">
+
+                <div style="flex:1;">
+                    <label style="display:block;margin-bottom:6px;font-weight:700;color:#333;">
+                        Validade
+                    </label>
+
+                    <input type="text" placeholder="MM/AA" maxlength="5" style="
+                        width:100%;
+                        padding:13px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                        box-sizing:border-box;
+                    ">
+                </div>
+
+                <div style="flex:1;">
+                    <label style="display:block;margin-bottom:6px;font-weight:700;color:#333;">
+                        CVV
+                    </label>
+
+                    <input type="password" placeholder="•••" maxlength="4" style="
+                        width:100%;
+                        padding:13px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                        box-sizing:border-box;
+                    ">
+                </div>
+
+            </div>
+
+            <button type="button" onclick="saveCard();" style="|
+                width:100%;
+                margin-top:22px;
+                padding:14px;
+                border:none;
+                border-radius:10px;
+                background:#f59e0b;
+                color:white;
+                font-size:16px;
+                font-weight:700;
+                cursor:pointer;
+            ">
+                Salvar cartão
+            </button>
+
+            <p style="
+                margin:15px 0 0;
+                font-size:12px;
+                color:#777;
+                text-align:center;
+            ">
+                🔒 Seus dados de pagamento devem ser tratados com segurança.
+            </p>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+ 
+ function saveCard() {
+    const inputs = document.querySelectorAll("#addCardModal input");
+
+    const nome = inputs[0].value.trim();
+    const numero = inputs[1].value.replace(/\D/g, "");
+
+    if (!nome || !numero) {
+        alert("Preencha o nome e o número do cartão.");
+        return;
+    }
+
+    if (numero.length < 13) {
+        alert("Digite um número de cartão válido.");
+        return;
+    }
+
+    const ultimos4 = numero.slice(-4);
+
+    localStorage.setItem("ep_saved_card", JSON.stringify({
+        nome: nome,
+        ultimos4: ultimos4
+    }));
+
+    const success = document.createElement("div");
+
+success.id = "cardSuccessModal";
+
+success.style.cssText = `
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100000;
+    padding:20px;
+`;
+
+success.innerHTML = `
+    <div style="
+        width:100%;
+        max-width:420px;
+        background:#fff;
+        border-radius:20px;
+        padding:32px;
+        text-align:center;
+        box-shadow:0 20px 60px rgba(0,0,0,.25);
+    ">
+
+        <div style="
+            width:64px;
+            height:64px;
+            margin:0 auto 18px;
+            border-radius:50%;
+            background:#e8f8ee;
+            color:#16a34a;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:34px;
+            font-weight:800;
+        ">
+            ✓
+        </div>
+
+        <div style="
+            color:#f59e0b;
+            font-size:12px;
+            font-weight:800;
+            letter-spacing:1px;
+            margin-bottom:6px;
+        ">
+            PAGAMENTOS
+        </div>
+
+        <h2 style="
+            margin:0;
+            color:#172033;
+            font-size:24px;
+        ">
+            Cartão salvo!
+        </h2>
+
+        <p style="
+            margin:10px 0 24px;
+            color:#777;
+            font-size:14px;
+        ">
+            Seu cartão foi adicionado à sua conta com sucesso.
+        </p>
+
+        <button id="successContinueBtn" style="
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:10px;
+            background:#f59e0b;
+            color:#fff;
+            font-size:16px;
+            font-weight:700;
+            cursor:pointer;
+        ">
+            Continuar
+        </button>
+
+    </div>
+`;
+
+document.body.appendChild(success);
+
+document.getElementById("successContinueBtn").onclick = function() {
+    success.remove();
+};
+
+    document.getElementById("addCardModal").remove();
+
+    openPayments();
+}
+ </script>
 
 </body>
-
 </html>
-
