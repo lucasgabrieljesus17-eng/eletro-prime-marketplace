@@ -18,7 +18,9 @@ const mpClient = new MercadoPagoConfig({
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
-const db = new Database(path.join(ROOT, "data", "eletroprime.db"));
+const dataDir = path.join(ROOT, "data");
+fs.mkdirSync(dataDir, { recursive: true });
+const db = new Database(path.join(dataDir, "eletroprime.db"));
 
 const uploadDir = path.join(ROOT, "public", "uploads");
 fs.mkdirSync(uploadDir, { recursive: true });
