@@ -34,7 +34,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "dev-only-change-me",
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: true, sameSite: "lax", secure: false, maxAge: 1000 * 60 * 60 * 8 }
+  cookie: {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: process.env.NODE_ENV === "production",
+  maxAge: 1000 * 60 * 60 * 8
+}
 }));
 app.use("/uploads", express.static(uploadDir));
 app.use(express.static(path.join(ROOT, "public")));
@@ -462,15 +467,62 @@ app.post("/api/favorites", (req, res) => {
 
 });
 
-app.post("/api/admin/login", async (req, res) => {
+/* ===== PROTEÇÃO CONTRA TENTATIVAS REPETIDAS NO LOGIN ADMIN ===== */
+
+const adminLoginAttempts = new Map();
+
+function adminLoginProtection(req, res, next) {
+
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0].trim() ||
+    req.socket.remoteAddress ||
+    "unknown";
+
+  const now = Date.now();
+  const windowMs = 15 * 60 * 1000; // 15 minutos
+  const maxAttempts = 5;
+
+  let data = adminLoginAttempts.get(ip);
+
+  if (!data || now - data.firstAttempt > windowMs) {
+    data = {
+      firstAttempt: now,
+      attempts: 0
+    };
+  }
+
+  if (data.attempts >= maxAttempts) {
+    return res.status(429).json({
+      error: "Muitas tentativas de login. Aguarde 15 minutos e tente novamente."
+    });
+  }
+
+  req.adminLoginIp = ip;
+  req.adminLoginAttempts = data;
+
+  next();
+}
+app.post("/api/admin/login", adminLoginProtection, async (req, res) => {
   const email = String(req.body.email || "");;
   const password = String(req.body.password || "");
   const adminEmail = process.env.ADMIN_EMAIL || "admin@eletroprime.com.br";
-  const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+  const adminPassword = process.env.ADMIN_PASSWORD;
   if (email !== adminEmail || password !== adminPassword) {
-    return res.status(401).json({ error: "E-mail ou senha inválidos." });
-  }
-  req.session.admin = { email };
+
+  req.adminLoginAttempts.attempts++;
+
+  adminLoginAttempts.set(
+    req.adminLoginIp,
+    req.adminLoginAttempts
+  );
+
+  return res.status(401).json({
+    error: "E-mail ou senha inválidos."
+  });
+}
+ 
+adminLoginAttempts.delete(req.adminLoginIp);
+req.session.admin = { email };
   res.json({ ok: true });
 });
 
@@ -584,7 +636,7 @@ app.get("/api/admin/stats", adminOnly, (_, res) => {
   res.json({ products, orders, revenue, lowStock });
 });
 
-app.get("/admin", (_, res) => {
+app.get("/admin", adminOnly, (_, res) => {
   res.sendFile(path.join(ROOT, "public", "admin.html"));
 });
 

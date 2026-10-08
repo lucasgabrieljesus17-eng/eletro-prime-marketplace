@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Eletro Prime - Produto</title>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+
+  <header class="top">
+    <div class="topbar">
+      <a class="brand" href="/">
+        ⚡ <span>ELETRO <b>PRIME</b></span>
+      </a>
+
+      <div class="head-actions">
+        <button onclick="location.href='/'">← Voltar para a loja</button>
+        <button id="cartBtn">🛒 <span id="cartCount">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="product-page">
+
+    <div id="productDetails">
+      Carregando produto...
+    </div>
+
+  </main>
+<script src="/app.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const productId = Number(params.get("id"));
+
+  fetch("/api/products")
+    .then(response => response.json())
+    .then(products => {
+
+      const product = products.find(p => p.id === productId);
+      window.produtoAtual = product;
+      const container = document.querySelector("#productDetails");
+
+      if (!product) {
+        container.innerHTML = "<h2>Produto não encontrado.</h2>";
+        return;
+      }
+
+      const price = product.sale_price ?? product.price;
+
+      const discount = product.sale_price
+        ? Math.round((1 - product.sale_price / product.price) * 100)
+        : 0;
+
+      container.innerHTML = `
+        <div class="product-detail">
+
+          <div class="product-detail-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+
+          <div class="product-detail-info">
+
+            ${product.sale_price ? `
+              <span class="offer-badge">
+                🔥 OFERTA ${discount}% OFF
+              </span>
+            ` : ""}
+
+            <h1>${product.name}</h1>
+
+            <div class="rating">
+              ⭐⭐⭐⭐⭐ <span>4,9</span>
+            </div>
+
+            ${product.sale_price ? `
+              <div class="price-old">
+                ${money(product.price)}
+              </div>
+            ` : ""}
+
+            <div class="price">
+              ${money(price)}
+            </div>
+
+            <div class="pix">
+              ${money(price * 0.97)} no Pix
+            </div>
+
+           <button class="gold-btn" onclick="comprarAgora()">
+              🛒 Comprar agora
+            </button>
+<button class="cart-detail-btn" onclick="adicionarCarrinho()">  🛒 Adicionar ao carrinho
+</button>
+<div class="product-quantity">
+
+  <strong>Quantidade:</strong>
+
+  <div class="quantity-control">
+    <button type="button" onclick="changeQuantity(-1)">−</button>
+    <span id="productQuantity">1</span>
+    <button type="button" onclick="changeQuantity(1)">+</button>
+  </div>
+
+  <div class="stock-info">
+    📦 Em estoque: <strong>${product.stock ?? 0} unidades</strong>
+  </div>
+
+</div>
+<div class="product-benefits">
+
+  <div class="benefit">
+    📦
+    <div>
+      <strong>Entrega para todo o Brasil</strong>
+      <span>Consulte o prazo para sua região</span>
+    </div>
+  </div>
+
+  <div class="benefit">
+    💳
+    <div>
+      <strong>Pagamento seguro</strong>
+      <span>Pix, cartão de crédito e débito</span>
+    </div>
+  </div>
+
+  <div class="benefit">
+    🔒
+    <div>
+      <strong>Compra segura</strong>
+      <span>Seus dados protegidos</span>
+    </div>
+  </div>
+
+  <div class="benefit">
+    ↩️
+    <div>
+      <strong>Troca e devolução</strong>
+      <span>Consulte nossa política</span>
+    </div>
+  </div>
+
+</div>
+          </div>
+
+        </div>
+      `;
+    })
+    .catch(error => {
+      console.error(error);
+      document.querySelector("#productDetails").innerHTML =
+        "<h2>Não foi possível carregar o produto.</h2>";
+    });
+</script>
+<script>
+function changeQuantity(change) {
+  const quantityElement = document.querySelector("#productQuantity");
+  let quantity = Number(quantityElement.textContent);
+
+  quantity += change;
+
+  if (quantity < 1) {
+    quantity = 1;
+  }
+
+  quantityElement.textContent = quantity;
+}
+
+function adicionarCarrinho() {
+  
+const qtd = Number(document.querySelector("#productQuantity").textContent);
+  let cart = JSON.parse(localStorage.getItem("ep_cart") || "[]");
+
+const existente = cart.find(item => item.id === produtoAtual.id);
+
+  if (existente) {
+    existente.qty += qtd;
+  } else {
+    cart.push({
+      id: produtoAtual.id,
+      name: produtoAtual.name,
+      price: produtoAtual.sale_price ?? produtoAtual.price,
+      image: produtoAtual.image,
+      qty: qtd
+    });
+  }
+
+  localStorage.setItem("ep_cart", JSON.stringify(cart));
+
+  alert("Produto adicionado ao carrinho!");
+}
+
+function comprarAgora() {
+
+  const customer = localStorage.getItem("ep_customer");
+
+  if (!customer) {
+
+    document
+      .querySelector("#loginRequiredContent")
+      .style.display = "block";
+
+    document
+      .querySelector("#productAddedContent")
+      .style.display = "none";
+
+    document
+      .querySelector("#purchaseModal")
+      .classList.add("active");
+
+    return;
+  }
+
+  adicionarCarrinho();
+
+  document
+    .querySelector("#loginRequiredContent")
+    .style.display = "none";
+
+  document
+    .querySelector("#productAddedContent")
+    .style.display = "block";
+
+  document
+    .querySelector("#purchaseModal")
+    .classList.add("active");
+}
+</script>
+
+<!-- MODAL DE COMPRA -->
+<div id="purchaseModal" class="purchase-modal">
+
+  <div class="purchase-overlay" onclick="closePurchaseModal()"></div>
+
+  <div class="purchase-box">
+
+    <button
+      type="button"
+      class="purchase-close"
+      onclick="closePurchaseModal()"
+    >
+      ×
+    </button>
+
+    <div id="loginRequiredContent">
+
+      <div class="purchase-icon">
+        🔐
+      </div>
+
+      <h2>Entre na sua conta para continuar</h2>
+
+      <p>
+        Para comprar na <strong>ELETRO PRIME</strong>,
+        é necessário ter uma conta.
+      </p>
+
+      <button
+        type="button"
+        class="purchase-primary"
+        onclick="location.href='/login.html'"
+      >
+        Entrar na minha conta
+      </button>
+
+      <button
+        type="button"
+        class="purchase-secondary"
+        onclick="location.href='/cadastro.html'"
+      >
+        Criar minha conta
+      </button>
+
+    </div>
+
+
+    <div id="productAddedContent" style="display:none;">
+
+      <div class="purchase-icon success">
+        ✓
+      </div>
+
+      <h2>Produto adicionado ao carrinho!</h2>
+
+      <p>
+        O produto foi adicionado com sucesso.
+        O que você deseja fazer agora?
+      </p>
+
+      <button
+        type="button"
+        class="purchase-primary"
+        onclick="closePurchaseModal()"
+      >
+        Continuar comprando
+      </button>
+
+      <button
+        type="button"
+        class="purchase-secondary"
+        onclick="location.href='/carrinho.html'"
+      >
+        🛒 Ver meu carrinho
+      </button>
+
+      <button
+        type="button"
+        class="purchase-payment"
+        onclick="location.href='/checkout.html'"
+      >
+        💳 Ir para pagamento
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+...
+
+    <button id="btnPagamento">Testar pagamento</button>
+
+    <script>
+    document.getElementById("btnPagamento").addEventListener("click", async () => {
+        try {
+            const resposta = await fetch("http://localhost:3000/criar-pagamento", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nome: "Produto de teste - Eletro Prime",
+                    preco: 10.00
+                })
+            });
+
+            const pagamento = await resposta.json();
+
+            if (pagamento.link) {
+                window.location.href = pagamento.link;
+            } else {
+                alert("Erro ao criar pagamento.");
+                console.log(pagamento);
+            }
+
+        } catch (erro) {
+            console.error(erro);
+            alert("Não foi possível conectar ao servidor.");
+        }
+    });
+    </script>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletro Prime - Pagamento</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .ep-checkout{
+      max-width:1000px;
+      margin:40px auto;
+      padding:0 20px 70px;
+    }
+    .ep-checkout h1{color:#fff}
+    .ep-checkout-grid{
+      display:grid;
+      grid-template-columns:1fr 360px;
+      gap:25px;
+    }
+    .ep-box{
+      background:#0d1422;
+      border:1px solid rgba(224,173,79,.18);
+      border-radius:20px;
+      padding:25px;
+      box-shadow:0 18px 45px rgba(0,0,0,.2);
+    }
+    .ep-box h2{color:#fff;margin-top:0}
+    .ep-field{margin-bottom:16px}
+    .ep-field label{
+      display:block;
+      color:#d7dbe5;
+      font-weight:700;
+      margin-bottom:7px;
+    }
+    .ep-field input{
+      width:100%;
+      box-sizing:border-box;
+      padding:13px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#151f31;
+      color:#fff;
+      outline:none;
+    }
+    .ep-pay-info{
+      margin-top:22px;
+      padding:18px;
+      border-radius:13px;
+      border:1px solid rgba(224,173,79,.22);
+      background:rgba(224,173,79,.06);
+      color:#d7dbe5;
+      line-height:1.6;
+    }
+    .ep-pay-info strong{color:#e0ad4f}
+    .ep-summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      color:#d7dbe5;
+      padding:9px 0;
+    }
+    .ep-summary-total{
+      display:flex;
+      justify-content:space-between;
+      color:#e0ad4f;
+      font-size:23px;
+      font-weight:900;
+      padding-top:18px;
+      margin-top:10px;
+      border-top:1px solid rgba(255,255,255,.1);
+    }
+    .ep-pay-btn{
+      width:100%;
+      padding:15px;
+      border:0;
+      border-radius:11px;
+      background:#e0ad4f;
+      color:#111;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      margin-top:20px;
+    }
+    .ep-pay-btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+    .ep-back{
+      display:inline-block;
+      margin-top:15px;
+      color:#d7dbe5;
+    }
+    .ep-msg{
+      margin-top:15px;
+      color:#ffd27a;
+      line-height:1.5;
+    }
+    @media(max-width:800px){
+      .ep-checkout-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+<header class="top">
+  <div class="topbar">
+    <a class="brand" href="/">⚡ <span>ELETRO <b>PRIME</b></span></a>
+    <div class="head-actions">
+      <button type="button" onclick="location.href='/carrinho.html'">
+        ← Voltar ao carrinho
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="ep-checkout">
+  <h1>💳 Finalizar compra</h1>
+
+  <div class="ep-checkout-grid">
+
+    <section class="ep-box">
+      <h2>Seus dados</h2>
+
+      <div class="ep-field">
+        <label for="name">Nome completo</label>
+        <input id="name" autocomplete="name">
+      </div>
+
+      <div class="ep-field">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="email">
+      </div>
+
+      <div class="ep-pay-info">
+        🔒 <strong>Pagamento seguro pelo Mercado Pago</strong><br>
+        Ao continuar, você será levado para o ambiente seguro do Mercado Pago,
+        onde poderá escolher a forma de pagamento disponível, como
+        <strong>Pix, cartão ou boleto</strong>.
+      </div>
+
+      <div id="msg" class="ep-msg"></div>
+
+      <button type="button" class="ep-pay-btn" id="payBtn">
+        Continuar para o Mercado Pago
+      </button>
+
+      <a class="ep-back" href="/carrinho.html">Voltar ao carrinho</a>
+    </section>
+
+    <aside class="ep-box">
+      <h2>Resumo do pedido</h2>
+      <div id="summary"></div>
+    </aside>
+
+  </div>
+</main>
+
+<script>
+function money(v){
+  return Number(v || 0).toLocaleString("pt-BR", {
+    style:"currency",
+    currency:"BRL"
+  });
+}
+
+function getCart(){
+  return JSON.parse(localStorage.getItem("ep_cart") || "[]");
+}
+
+function escapeHtml(s){
+  return String(s || "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[m]));
+}
+
+const items = getCart();
+const summary = document.querySelector("#summary");
+const payBtn = document.querySelector("#payBtn");
+const msg = document.querySelector("#msg");
+
+if(!items.length){
+
+  summary.innerHTML = `
+    <p style="color:#b8c0d0">
+      Seu carrinho está vazio.
+    </p>
+  `;
+
+  payBtn.disabled = true;
+
+}else{
+
+  const total = items.reduce(
+    (sum,item) => sum + Number(item.price) * Number(item.qty),
+    0
+  );
+
+  summary.innerHTML =
+    items.map(item => `
+      <div class="ep-summary-row">
+        <span>${escapeHtml(item.name)} × ${item.qty}</span>
+        <span>${money(item.price * item.qty)}</span>
+      </div>
+    `).join("") +
+
+    `
+      <div class="ep-summary-total">
+        <span>Total</span>
+        <span>${money(total)}</span>
+      </div>
+    `;
+}
+
+/* Preenche os dados se o cliente já estiver salvo */
+const savedCustomer = localStorage.getItem("ep_customer");
+
+if(savedCustomer){
+
+  try{
+
+    const customer = JSON.parse(savedCustomer);
+
+    if(customer.name){
+      document.querySelector("#name").value = customer.name;
+    }
+
+    if(customer.email){
+      document.querySelector("#email").value = customer.email;
+    }
+
+  }catch(error){
+    console.log("Cliente salvo inválido.");
+  }
+}
+
+payBtn.addEventListener("click", async () => {
+
+  msg.textContent = "";
+
+  if(!items.length){
+    msg.textContent = "Seu carrinho está vazio.";
+    return;
+  }
+
+  const name = document.querySelector("#name").value.trim();
+  const email = document.querySelector("#email").value.trim();
+
+  if(!name){
+    msg.textContent = "Digite seu nome completo.";
+    return;
+  }
+
+  if(!email || !email.includes("@")){
+    msg.textContent = "Digite um e-mail válido.";
+    return;
+  }
+
+  const total = items.reduce(
+    (sum,item) => sum + Number(item.price) * Number(item.qty),
+    0
+  );
+
+  payBtn.disabled = true;
+  payBtn.textContent = "Abrindo Mercado Pago...";
+
+  try{
+
+    /*
+      Este valor é apenas registrado no pedido.
+      NÃO força o Mercado Pago a usar Pix.
+      O Checkout Pro continuará mostrando os meios
+      de pagamento disponíveis para o cliente.
+    */
+    const orderResponse = await fetch("/api/orders", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        customer_name:name,
+        email:email,
+        total:total,
+        payment_method:"pix",
+        items:items
+      })
+    });
+
+    const orderData = await orderResponse.json();
+
+    if(!orderResponse.ok){
+      throw new Error(
+        orderData.error || "Não foi possível criar o pedido."
+      );
+    }
+
+    const mpResponse = await fetch(
+      "/api/mercadopago/preference",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          items:items.map(item => ({
+            id:item.id,
+            title:item.name,
+            quantity:Number(item.qty),
+            unit_price:Number(item.price)
+          }))
+        })
+      }
+    );
+
+    const mpData = await mpResponse.json();
+
+    if(!mpResponse.ok){
+      throw new Error(
+        mpData.error || "Não foi possível iniciar o Mercado Pago."
+      );
+    }
+
+    if(!mpData.init_point){
+      throw new Error(
+        "O Mercado Pago não retornou o link de pagamento."
+      );
+    }
+
+    /*
+      Só limpa o carrinho depois que recebemos
+      o link real do Mercado Pago.
+    */
+    localStorage.removeItem("ep_cart");
+
+    window.location.href = mpData.init_point;
+
+  }catch(error){
+
+    console.error(error);
+
+    msg.textContent = error.message;
+
+    payBtn.disabled = false;
+    payBtn.textContent = "Continuar para o Mercado Pago";
+  }
+
+});
+</script>
+
+</body>
+</html>

@@ -626,3 +626,64 @@ async function toggleFavorite(productId, button) {
 
 }
 
+/* ===== CONSENTIMENTO DE COOKIES ELETRO PRIME ===== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const cookieBanner = document.getElementById("cookieBanner");
+  const acceptCookies = document.getElementById("acceptCookies");
+  const rejectCookies = document.getElementById("rejectCookies");
+
+  if (!cookieBanner || !acceptCookies || !rejectCookies) {
+    return;
+  }
+
+  const consent = localStorage.getItem("ep_cookie_consent");
+
+  // Se o cliente já escolheu uma opção, não mostrar novamente
+  if (consent === "accepted" || consent === "rejected") {
+    cookieBanner.style.display = "none";
+  }
+
+  // ACEITAR
+  acceptCookies.addEventListener("click", () => {
+
+    localStorage.setItem("ep_cookie_consent", "accepted");
+
+    cookieBanner.style.display = "none";
+
+  });
+
+  // RECUSAR
+  rejectCookies.addEventListener("click", () => {
+
+    localStorage.setItem("ep_cookie_consent", "rejected");
+
+    cookieBanner.style.display = "none";
+
+  });
+
+});
+
+/* ===== PREFERÊNCIAS DE COOKIES ===== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const cookiePreferences = document.getElementById("cookiePreferences");
+  const cookieBanner = document.getElementById("cookieBanner");
+
+  if (!cookiePreferences || !cookieBanner) {
+    return;
+  }
+
+  cookiePreferences.addEventListener("click", (event) => {
+
+    event.preventDefault();
+
+    localStorage.removeItem("ep_cookie_consent");
+
+    cookieBanner.style.display = "flex";
+
+  });
+
+});
