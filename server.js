@@ -636,7 +636,7 @@ app.get("/api/admin/stats", adminOnly, (_, res) => {
   res.json({ products, orders, revenue, lowStock });
 });
 
-app.get("/admin", adminOnly, (_, res) => {
+app.get("/admin", (_, res) => {
   res.sendFile(path.join(ROOT, "public", "admin.html"));
 });
 
